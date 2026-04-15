@@ -1,0 +1,1438 @@
+{
+  "version": "2.0",
+  "description": "EmbedMVABench ground truth annotations - Multi-variable Atomicity Violation in Embedded C",
+  "defect_type": "multi_variable_atomicity_violation",
+  "cases": [
+    {
+      "id": "L1_001",
+      "level": "L1",
+      "source": "real",
+      "origin_file": "VBUG00013672",
+      "domain": "航空电子",
+      "processor": "通用",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "BUF_INTERNAL[0]",
+            "BUF_INTERNAL[1]"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "fnInternalHandling",
+              "lines": [
+                506,
+                506
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "ace_int0",
+              "lines": [
+                713,
+                714
+              ]
+            }
+          },
+          "fix_strategy": "move_to_interrupt_context"
+        }
+      ]
+    },
+    {
+      "id": "L1_002",
+      "level": "L1",
+      "source": "real",
+      "origin_file": "VBUG00015006",
+      "domain": "航天载荷控制",
+      "processor": "8051",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "FLAG_CAMERA_A_STATE",
+            "TIME_FIVE_SECOND_CAMERA_A"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "payload_powerup_down",
+              "lines": [
+                608,
+                621
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "timer2_int",
+              "lines": [
+                802,
+                807
+              ]
+            }
+          },
+          "fix_strategy": "disable_global_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "L1_003",
+      "level": "L1",
+      "source": "real",
+      "origin_file": "VBUG00016350",
+      "domain": "卫星时钟频率校正",
+      "processor": "SPARC",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "VIDS_AVG_ADJ_PERH",
+            "VIDS_AVG_ADJ_PERL"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "Ext2ClockIrq",
+              "lines": [
+                759,
+                760
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "HandelTcBlkAvgAdjust",
+              "lines": [
+                645,
+                646
+              ]
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        },
+        {
+          "defect_id": 2,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "gps_status.time_hi",
+            "gps_status.time_lo"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "HandleGpsTimeJump",
+              "lines": [
+                514,
+                515
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "GpsPpsIrq",
+              "lines": [
+                846,
+                847
+              ]
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        },
+        {
+          "defect_id": 3,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "clk_eng.clk_state",
+            "clk_eng.err_flag"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "writer",
+              "function": "ProcessTcCommand",
+              "lines": [
+                690,
+                691
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "Ext2ClockIrq",
+              "lines": [
+                787,
+                794
+              ]
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        },
+        {
+          "defect_id": 4,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "clk_eng.err_flag",
+            "gps_valid_flag"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "ClkFlagUpdate",
+              "lines": [
+                556,
+                587
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "GpsPpsIrq",
+              "lines": [
+                853,
+                850
+              ]
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "L1_004",
+      "level": "L1",
+      "source": "real",
+      "origin_file": "VBUG00025598",
+      "domain": "实时操作系统AHB总线错误中断控制",
+      "processor": "SPARC",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "BusErrIntClose",
+            "mec[MEC_AHB_INTCTRL_REG/4]"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "writer",
+              "function": "sysTask",
+              "lines": [
+                619,
+                621
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "Trap_Single_Error",
+              "lines": [
+                743,
+                748
+              ]
+            }
+          },
+          "fix_strategy": "restructure_call_chain"
+        }
+      ]
+    },
+    {
+      "id": "L1_005",
+      "level": "L1",
+      "source": "real",
+      "origin_file": "VBUG00025808",
+      "domain": "1553B总线共享内存读写",
+      "processor": "8051",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "msb",
+            "lsb"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "buRtRdRam",
+              "lines": [
+                348,
+                351
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "extrenINIT0",
+              "lines": [
+                750,
+                751
+              ]
+            }
+          },
+          "fix_strategy": "disable_global_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "L1_006",
+      "level": "L1",
+      "source": "real",
+      "origin_file": "VBUG00026852",
+      "domain": "1553B广播数据接收与遥控处理",
+      "processor": "通用",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "guangboGet[0]",
+            "guangboGet[1]"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "cgYC",
+              "lines": [
+                609,
+                612
+              ],
+              "additional_sites": [
+                {"function": "main", "lines": [235, 249]}
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "rt_1553_isr",
+              "lines": [
+                709,
+                710
+              ]
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "L1_007",
+      "level": "L1",
+      "source": "real",
+      "origin_file": "VBUG00030281",
+      "domain": "伺服电机RDC角度测量",
+      "processor": "通用",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "FactX",
+            "FactY"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "writer",
+              "function": "ReadFactAngle",
+              "lines": [
+                514,
+                516
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "UartAIsr",
+              "lines": [
+                805,
+                806
+              ]
+            }
+          },
+          "fix_strategy": "restructure_call_chain"
+        },
+        {
+          "defect_id": 2,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "TargetX",
+            "TargetY"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "FeedBack",
+              "lines": [
+                724,
+                725
+              ],
+              "additional_sites": [
+                {"function": "main", "lines": [245, 245]}
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "DecodeFunction",
+              "lines": [
+                818,
+                819
+              ],
+              "call_chain": "UartAIsr → DecodeFunction"
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "L1_008",
+      "level": "L1",
+      "source": "real",
+      "origin_file": "VBUG00030858",
+      "domain": "光学传感器零位偏差标定",
+      "processor": "通用",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "XYOffset[0]",
+            "XYOffset[2]"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "SRAMDataCalc",
+              "lines": [
+                634,
+                637
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "c_int01",
+              "lines": [
+                793,
+                793
+              ]
+            }
+          },
+          "fix_strategy": "disable_global_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "L2_001",
+      "level": "L2",
+      "source": "real",
+      "origin_file": "VBUG00011880",
+      "domain": "工业温控",
+      "processor": "8051",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "HeatOpenTime[0]",
+            "HeatOpenTime[1]",
+            "HeatOpenTime[2]",
+            "HeatOpenTime[3]"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "writer",
+              "function": "PDKongWen",
+              "lines": [
+                726,
+                738
+              ]
+            },
+            "context_B": {
+              "role": "reader",
+              "function": "Timer0_INT",
+              "lines": [
+                814,
+                814
+              ]
+            }
+          },
+          "fix_strategy": "introduce_shadow_variable_with_critical_section"
+        }
+      ]
+    },
+    {
+      "id": "L2_002",
+      "level": "L2",
+      "source": "real",
+      "origin_file": "VBUG00012857",
+      "domain": "嵌入式存储管理",
+      "processor": "8051",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "Engineering_Para_Ce5.System_time[0]",
+            "Engineering_Para_Ce5.System_time[1]",
+            "Engineering_Para_Ce5.System_time[2]"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "important_backup",
+              "lines": [
+                731,
+                745
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "timer2_int",
+              "lines": [
+                975,
+                992
+              ]
+            }
+          },
+          "fix_strategy": "disable_global_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "L2_003",
+      "level": "L2",
+      "source": "real",
+      "origin_file": "VBUG00012863",
+      "domain": "航天载荷相机通信",
+      "processor": "8051",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "CAMERA_A_REC_BUF[17]",
+            "Engineering_Para_Ce5.Camera_A_RS422",
+            "Engineering_Para_Ce5.Camera_A_Err_Cnt"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "payload_RS422",
+              "lines": [
+                575,
+                623
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "RS422_int1",
+              "lines": [
+                642,
+                642
+              ]
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "L2_004",
+      "level": "L2",
+      "source": "real",
+      "origin_file": "VBUG00013924",
+      "domain": "卫星1553B广播遥测",
+      "processor": "8051",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "BRCST_buf[6]",
+            "BRCST_buf[7]"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "ExtractBroadcastParam",
+              "lines": [
+                737,
+                740
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "ace_int0",
+              "lines": [
+                831,
+                831
+              ]
+            }
+          },
+          "fix_strategy": "move_to_interrupt_context"
+        },
+        {
+          "defect_id": 2,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "BRCST_buf[0]",
+            "BRCST_buf[1]",
+            "BrcstRecvCnt"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "ValidateBroadcastParams",
+              "lines": [
+                692,
+                692
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "ace_int0",
+              "lines": [
+                831,
+                838
+              ]
+            }
+          },
+          "fix_strategy": "move_to_interrupt_context"
+        }
+      ]
+    },
+    {
+      "id": "L2_005",
+      "level": "L2",
+      "source": "real",
+      "origin_file": "VBUG00014363",
+      "domain": "卫星1553B遥控写入",
+      "processor": "8051",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "VECTOR_WORD_ADDR[0]",
+            "VECTOR_WORD_ADDR[1]"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "writer",
+              "function": "WriteRT",
+              "lines": [
+                747,
+                755
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "Ext0Int",
+              "lines": [
+                814,
+                815
+              ]
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "L2_006",
+      "level": "L2",
+      "source": "real",
+      "origin_file": "VBUG00016305",
+      "domain": "卫星遥测时间计算",
+      "processor": "通用",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "Time.MS",
+            "Time.S"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "SnapshotSystemTime",
+              "lines": [
+                620,
+                621
+              ],
+              "additional_sites": [
+                {"function": "RunTimeSyncSM", "lines": [373, 374]},
+                {"function": "MonitorTimeDrift", "lines": [414, 415]}
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "ClockISR",
+              "lines": [
+                696,
+                701
+              ]
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        },
+        {
+          "defect_id": 2,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "timeback_result_s",
+            "timeback_result_ms"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "PackTelemetryFrame",
+              "lines": [
+                483,
+                483
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "ProcessTimeSendBack",
+              "lines": [
+                664,
+                665
+              ],
+              "call_chain": "IntOBDH → ProcessTimeSendBack"
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "L2_007",
+      "level": "L2",
+      "source": "real",
+      "origin_file": "VBUG00017076",
+      "domain": "卫星NLS单路UART指令收发",
+      "processor": "通用",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "snd_sig[2]",
+            "snd_sig[3]",
+            "snd_sig[4]",
+            "snd_sig[5]"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "writer",
+              "function": "AppMain",
+              "lines": [
+                575,
+                579
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "DispatchSignal",
+              "lines": [
+                633,
+                642
+              ]
+            }
+          },
+          "fix_strategy": "restructure_call_chain"
+        }
+      ]
+    },
+    {
+      "id": "L2_008",
+      "level": "L2",
+      "source": "real",
+      "origin_file": "VBUG00022305",
+      "domain": "卫星电源管理遥测采集",
+      "processor": "8051",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "uiAnSmp[9]",
+            "Time.MS",
+            "Time.S"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "writer",
+              "function": "TM_Collect",
+              "lines": [
+                535,
+                535
+              ],
+              "additional_sites": [
+                {"function": "LogFaultEvent", "lines": [730, 731]}
+              ]
+            },
+            "context_B": {
+              "role": "reader",
+              "function": "Self_Manage",
+              "lines": [
+                871,
+                871
+              ]
+            }
+          },
+          "fix_strategy": "restructure_call_chain"
+        }
+      ]
+    },
+    {
+      "id": "L2_009",
+      "level": "L2",
+      "source": "real",
+      "origin_file": "VBUG00022902",
+      "domain": "卫星CAN总线遥测双缓冲",
+      "processor": "通用",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "Can_QuickRmtA[7]",
+            "Can_SlowRmtA[70]"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "writer",
+              "function": "RmtData_Rdy",
+              "lines": [
+                478,
+                485
+              ]
+            },
+            "context_B": {
+              "role": "reader",
+              "function": "CanA_RvIntr",
+              "lines": [
+                702,
+                720
+              ]
+            }
+          },
+          "fix_strategy": "restructure_call_chain"
+        }
+      ]
+    },
+    {
+      "id": "L2_010",
+      "level": "L2",
+      "source": "real",
+      "origin_file": "VBUG00015350",
+      "domain": "航天载荷相机RS422帧校验",
+      "processor": "8051",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "CAMERA_A_REC_BUF[0]",
+            "CAMERA_A_REC_BUF[1]",
+            "CAMERA_A_REC_BUF[2]",
+            "CAMERA_A_REC_BUF[3]",
+            "CAMERA_A_REC_BUF[4]",
+            "CAMERA_A_REC_BUF[16]"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "payload_RS422",
+              "lines": [
+                672,
+                672
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "RS422_int1",
+              "lines": [
+                766,
+                766
+              ]
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "L3_001",
+      "level": "L3",
+      "source": "real",
+      "origin_file": "VBUG00034802",
+      "domain": "卫星GNC时间管理",
+      "processor": "通用",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "GNC_Time.S",
+            "GNC_Time.MS",
+            "GNC_Time.GPT_Old",
+            "GNC_Time.deltaMS"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "GetGNCCTime",
+              "lines": [
+                1066,
+                1069
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "UpdateTimeISR",
+              "lines": [
+                1230,
+                1233
+              ]
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        },
+        {
+          "defect_id": 2,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "GNC_Time.SInt",
+            "GNC_Time.MSInt",
+            "GNC_Time.GPT_OldInt"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "writer",
+              "function": "SyncGpsTime",
+              "lines": [
+                1318,
+                1320
+              ]
+            },
+            "context_B": {
+              "role": "reader_writer",
+              "function": "UpdateTimeISR",
+              "lines": [
+                1211,
+                1227
+              ]
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        },
+        {
+          "defect_id": 3,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "GNC_Time.S",
+            "GNC_Time.MS",
+            "GNC_Time.GPT_Old",
+            "GNC_Time.deltaMS"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "writer",
+              "function": "UpdateTimeISR",
+              "lines": [
+                1230,
+                1233
+              ]
+            },
+            "context_B": {
+              "role": "reader",
+              "function": "BuildTimePacket",
+              "lines": [
+                1274,
+                1276
+              ],
+              "call_chain": "SendTimeISR → BuildTimePacket"
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "L3_002",
+      "level": "L3",
+      "source": "real",
+      "origin_file": "VBUG00014340",
+      "domain": "星上绝对时间控制",
+      "processor": "通用",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "abs_time_ctrl[0].abshi",
+            "abs_time_ctrl[0].abspps",
+            "abs_time_ctrl[0].available"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "writer",
+              "function": "Func_SyncABSTime",
+              "lines": [
+                864,
+                866
+              ]
+            },
+            "context_B": {
+              "role": "reader",
+              "function": "ISR_pps",
+              "lines": [
+                944,
+                948
+              ]
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "L3_003",
+      "level": "L3",
+      "source": "real",
+      "origin_file": "VBUG00015277",
+      "domain": "工业继电器控制",
+      "processor": "8051",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "GJ_Struct.GJ_Command_is_done",
+            "GJ_Struct.GJ_ZSF_Address",
+            "GJ_Struct.GJ_ZSF_Length",
+            "GJ_Struct.GJ_ZSF_Status"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader_writer",
+              "function": "GJ_SetZSF_Function",
+              "lines": [
+                629,
+                652
+              ],
+              "call_chain": "main → ControlTask → GJ_SetZSF_Function"
+            },
+            "context_B": {
+              "role": "reader_writer",
+              "function": "Int_4ms",
+              "lines": [
+                682,
+                758
+              ]
+            }
+          },
+          "fix_strategy": "disable_global_interrupt"
+        },
+        {
+          "defect_id": 2,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "GJ_Struct.GJ_Command_is_done",
+            "GJ_Struct.GJ_ZSF_Address",
+            "GJ_Struct.GJ_ZSF_Length",
+            "GJ_Struct.GJ_ZSF_Status"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "writer",
+              "function": "RunRelaySeqByTable",
+              "lines": [
+                907,
+                910
+              ]
+            },
+            "context_B": {
+              "role": "reader_writer",
+              "function": "Int_4ms",
+              "lines": [
+                682,
+                758
+              ],
+              "call_chain": "Int_4ms → ZSF_update"
+            }
+          },
+          "fix_strategy": "disable_global_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "L3_004",
+      "level": "L3",
+      "source": "real",
+      "origin_file": "VBUG00017073",
+      "domain": "卫星星时同步",
+      "processor": "SPARC",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "StarState.StarTime",
+            "StarState.timeupdata_new",
+            "StarState.timeupdata_new_NLS"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader_writer",
+              "function": "SynStarTime",
+              "lines": [
+                568,
+                592
+              ],
+              "call_chain": "main → LoopTask1 → SynStarTime"
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "CmdUnpack",
+              "lines": [
+                745,
+                753
+              ],
+              "call_chain": "SYS_ISRExt6 → CmdUnpack"
+            }
+          },
+          "fix_strategy": "introduce_shadow_variable_with_critical_section"
+        },
+        {
+          "defect_id": 2,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "CmdTime.cmdtime[0]",
+            "CmdTime.cmdtime[1]",
+            "CmdTime.cmdtime[2]"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "CMU_cmd_respond",
+              "lines": [
+                668,
+                670
+              ]
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "CmdUnpack",
+              "lines": [
+                748,
+                750
+              ],
+              "call_chain": "SYS_ISRExt6 → CmdUnpack"
+            }
+          },
+          "fix_strategy": "introduce_shadow_variable_with_critical_section"
+        }
+      ]
+    },
+    {
+      "id": "L3_005",
+      "level": "L3",
+      "source": "real",
+      "origin_file": "VBUG00017760",
+      "domain": "星敏感器姿态四元数处理",
+      "processor": "通用",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "mRoughVector.v3[0]",
+            "mRoughVector.v3[1]",
+            "mRoughVector.v3[2]"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "JDSIGN",
+              "lines": [
+                854,
+                855
+              ],
+              "call_chain": "main → ModeScheduler → StarSensorProcess → ModeInvoke → LocalRecognise → CONSGSTP → SeekIP → JDSIGN"
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "ParseStarFrame",
+              "lines": [
+                954,
+                954
+              ],
+              "call_chain": "INT_UART_ISR → ParseStarFrame"
+            }
+          },
+          "fix_strategy": "introduce_shadow_variable_with_critical_section"
+        },
+        {
+          "defect_id": 2,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "mRoughVector.v3[0]",
+            "mRoughVector.v3[1]",
+            "mRoughVector.v3[2]"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "writer",
+              "function": "WinRecognise",
+              "lines": [
+                746,
+                749
+              ],
+              "call_chain": "main → ModeScheduler → StarSensorProcess → ModeInvoke → LocalRecognise → WinRecognise"
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "ParseStarFrame",
+              "lines": [
+                954,
+                954
+              ],
+              "call_chain": "INT_UART_ISR → ParseStarFrame"
+            }
+          },
+          "fix_strategy": "introduce_shadow_variable_with_critical_section"
+        },
+        {
+          "defect_id": 3,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "slist[].px",
+            "slist[].py",
+            "slist[].mag",
+            "slist[].id",
+            "scnt"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "JDSIGN",
+              "lines": [
+                841,
+                844
+              ],
+              "call_chain": "main → ModeScheduler → StarSensorProcess → ModeInvoke → LocalRecognise → CONSGSTP → SeekIP → JDSIGN"
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "ExtractStarPoints",
+              "lines": [
+                1561,
+                1570
+              ],
+              "call_chain": "INT_UART_ISR → ParseStarFrame → ExtractStarPoints"
+            }
+          },
+          "fix_strategy": "introduce_shadow_variable_with_critical_section"
+        }
+      ]
+    },
+    {
+      "id": "L3_006",
+      "level": "L3",
+      "source": "real",
+      "origin_file": "VBUG00026839",
+      "domain": "卫星姿态计算",
+      "processor": "SPARC",
+      "has_defect": true,
+      "defects": [
+        {
+          "defect_id": 1,
+          "type": "multi_variable_atomicity_violation",
+          "shared_variables": [
+            "Auxi_Result_1.Q.q[0]",
+            "Auxi_Result_1.Q.q[1]",
+            "Auxi_Result_1.Q.q[2]",
+            "Auxi_Result_1.Q.q[3]",
+            "Auxi_Result_1.omega[0]",
+            "Auxi_Result_1.omega[1]",
+            "Auxi_Result_1.omega[2]",
+            "Auxi_Result_1.Startime"
+          ],
+          "conflict": {
+            "context_A": {
+              "role": "reader",
+              "function": "CoordTransform",
+              "lines": [
+                592,
+                600
+              ],
+              "call_chain": "main → ModeManager → ModeJudge_1 → CoordTransform"
+            },
+            "context_B": {
+              "role": "writer",
+              "function": "ExtInt3_coordinate",
+              "lines": [
+                750,
+                759
+              ]
+            }
+          },
+          "fix_strategy": "disable_specific_interrupt"
+        }
+      ]
+    },
+    {
+      "id": "NEG_001",
+      "level": "L1",
+      "source": "derived",
+      "origin_case": "L1_001",
+      "domain": "航空电子",
+      "processor": "通用",
+      "has_defect": false,
+      "defects": null,
+      "fix_note": "将 BUF_INTERNAL[0/1] 的一致性校验移入中断上下文，ace_int0 内部完成比较后通过单字节标志 g_int_cmd_valid 通知主循环，主循环不再直接读取 BUF_INTERNAL，消除竞争"
+    },
+    {
+      "id": "NEG_002",
+      "level": "L1",
+      "source": "derived",
+      "origin_case": "L1_002",
+      "domain": "航天载荷控制",
+      "processor": "8051",
+      "has_defect": false,
+      "defects": null,
+      "fix_note": "在 payload_powerup_down() 读取 FLAG_CAMERA_A_STATE 和 TIME_FIVE_SECOND_CAMERA_A 前后添加 EA=0/EA=1，将两个变量的读取合并为原子操作，使用局部快照 cam_state_snap/time_snap 消除与 timer2_int 的竞争"
+    },
+    {
+      "id": "NEG_003",
+      "level": "L2",
+      "source": "derived",
+      "origin_case": "L2_001",
+      "domain": "工业温控",
+      "processor": "8051",
+      "has_defect": false,
+      "defects": null,
+      "fix_note": "引入影子变量 HeatOpenTime_shadow[4]，PDKongWen() PID 计算结果先写入影子变量，计算完成后在 ET0=0/ET0=1 临界区内整体复制到 HeatOpenTime[4]，Timer0_INT 读取的 HeatOpenTime 始终处于完整一致状态"
+    },
+    {
+      "id": "NEG_004",
+      "level": "L2",
+      "source": "derived",
+      "origin_case": "L2_002",
+      "domain": "嵌入式存储管理",
+      "processor": "8051",
+      "has_defect": false,
+      "defects": null,
+      "fix_note": "在 important_backup() 读取 System_time[0/1/2] 前后添加 EA=0/EA=1，将三字段读取合并为原子操作，存入局部快照 snap_time[3] 后再写入备份区，消除与 timer2_int 的竞争"
+    },
+    {
+      "id": "NEG_005",
+      "level": "L2",
+      "source": "derived",
+      "origin_case": "L2_003",
+      "domain": "航天载荷相机通信",
+      "processor": "8051",
+      "has_defect": false,
+      "defects": null,
+      "fix_note": "在 payload_RS422() 读取 CAMERA_A_REC_BUF 前，先执行 EX1=0 屏蔽外部中断1，将完整帧原子拷贝到局部缓冲 local_frame[17]，再恢复 EX1=1，后续校验和解析均基于局部拷贝，消除 RS422_int1 覆写缓冲区导致的撕裂数据读取"
+    },
+    {
+      "id": "NEG_006",
+      "level": "L2",
+      "source": "derived",
+      "origin_case": "L2_004",
+      "domain": "卫星1553B广播遥测",
+      "processor": "8051",
+      "has_defect": false,
+      "defects": null,
+      "fix_note": "在 ace_int0 中断内批量更新 BRCST_buf 后，同步设置快照变量 BRCST_buf6_snap 和 BRCST_buf7_snap；fnBrcstParaSet 改为读取快照变量而非直接读取 BRCST_buf[6/7]，消除主任务与中断对位置时间字段的竞争访问"
+    },
+    {
+      "id": "NEG_007",
+      "level": "L2",
+      "source": "derived",
+      "origin_case": "L2_007",
+      "domain": "卫星NLS单路UART指令收发",
+      "processor": "通用",
+      "has_defect": false,
+      "defects": null,
+      "fix_note": "ISR_INT6 将 1553B 解包结果暂存至 g_pending_cmd/g_pending_param/g_cmd_ready，不再直接调用 DispatchSignal；AppMain 检测到 g_cmd_ready 后统一在主循环上下文调用 DispatchSignal，将 snd_sig[2~5] 的写操作完全收归主循环，消除与 ISR_INT6 的交叉写入竞争"
+    },
+    {
+      "id": "NEG_008",
+      "level": "L1",
+      "source": "derived",
+      "origin_case": "L1_004",
+      "domain": "实时操作系统AHB总线错误中断控制",
+      "processor": "SPARC",
+      "has_defect": false,
+      "defects": null,
+      "fix_note": "Trap_Single_Error 在中断上下文内完成 BusErrIntClose 置位、中断使能清除和状态寄存器清除；sysTask 检测到 BusErrIntClose 后通过 OpenAhbInt() 先清标志再重新使能中断，确保再使能前标志已完成清除，消除两个上下文对 BusErrIntClose 和 MEC 寄存器的交叉写入竞争"
+    },
+    {
+      "id": "NEG_009",
+      "level": "L3",
+      "source": "derived",
+      "origin_case": "L3_001",
+      "domain": "卫星GNC时间管理",
+      "processor": "通用",
+      "has_defect": false,
+      "defects": null,
+      "fix_note": "GetGNCCTime 在批量读取 GNC_Time.S/MS/GPT_Old/deltaMS 前调用 DisableClockIRQ() 屏蔽时钟中断，读取完成后调用 EnableClockIRQ() 恢复中断，保证四字段批量读取的原子性，消除与 UpdateTimeISR 分步写入之间的竞争"
+    },
+    {
+      "id": "NEG_010",
+      "level": "L3",
+      "source": "derived",
+      "origin_case": "L3_004",
+      "domain": "卫星星时同步",
+      "processor": "SPARC",
+      "has_defect": false,
+      "defects": null,
+      "fix_note": "SynStarTime 在批量读写 timeupdata_old/timeupdata_new/timeupdata_new_NLS 前后调用 DisableExt6IRQ()/EnableExt6IRQ()，并从中断侧写入的影子变量 StarState.timeupdata_int 读取最新计数器快照，保证多字段一次性一致读取，消除与 CmdUnpack 对 timeupdata_int 写入之间的竞争"
+    },
+    {
+      "id": "NEG_011",
+      "level": "L3",
+      "source": "derived",
+      "origin_case": "L3_005",
+      "domain": "星敏感器姿态四元数处理",
+      "processor": "通用",
+      "has_defect": false,
+      "defects": null,
+      "fix_note": "ParseStarFrame 将解析结果写入影子变量 mRoughVec[] 并置位 mModeBChged；ModeJudge 在 DisableUartIRQ()/EnableUartIRQ() 临界区内将三分量从影子变量一次性复制到 mRoughVector.v3[]，确保三字段原子一致性，消除与 JDSIGN 对 v3[0]/v3[1] 读取之间的竞争"
+    },
+    {
+      "id": "NEG_012",
+      "level": "L3",
+      "source": "derived",
+      "origin_case": "L3_006",
+      "domain": "卫星姿态计算",
+      "processor": "SPARC",
+      "has_defect": false,
+      "defects": null,
+      "fix_note": "ModeJudge_1 和 CoordTransform 在批量读取 Auxi_Result_1 的八个成员前后分别调用 DisableExtInt3()/EnableExtInt3()，确保四元数（q[0..3]）、角速度（omega[0..2]）及时间戳（Startime）八字段批量读取的原子性，消除与 ExtInt3_coordinate 写入之间的竞争"
+    }
+  ]
+}

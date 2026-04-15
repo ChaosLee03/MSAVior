@@ -1,0 +1,89 @@
+{
+  "version": "1.0",
+  "project": "L3_004_StarTimeSync",
+  "source_language": "c",
+  "defects": [
+    {
+      "id": "L3_004_AV_001",
+      "type": "atomicity-violation",
+      "subtype": "DFC_RWWR",
+      "severity": "critical",
+      "description": "Multi-variable atomicity violation (DFC - Disjoint Field Correlation): Main task reads CmdTime.cmdtime[1] and cmdtime[2] to compute StarTime, but ISR can preempt and update both fields between the two reads, causing inconsistent calibration data to be used.",
+      "location": {
+        "file": "L3_004.c",
+        "line": 669,
+        "function": "CMU_cmd_respond"
+      },
+      "isr_location": {
+        "file": "L3_004.c",
+        "line": 749,
+        "function": "CmdUnpack",
+        "isr_name": "SYS_ISRExt6"
+      },
+      "affected_variables": ["CmdTime.cmdtime[1]", "CmdTime.cmdtime[2]"],
+      "interleaving_pattern": "READ-WRITE-WRITE-READ",
+      "root_cause": "Missing critical section protection when reading correlated timestamp fields across multiple statements",
+      "fix_suggestion": "Use DisableExt6IRQ/EnableExt6IRQ to protect the multi-field read operation in CMU_cmd_respond",
+      "buggy_code": "    StarState.StarTime = (float64)CmdTime.cmdtime[0] * 65536.0\n                       + (float64)CmdTime.cmdtime[1]\n                       + (float64)CmdTime.cmdtime[2] * 0.001;",
+      "impact": "Star time calibration may use inconsistent timestamp values, leading to synchronization errors in the star tracker subsystem"
+    },
+    {
+      "id": "L3_004_AV_002",
+      "type": "atomicity-violation",
+      "subtype": "TUP_WRRW",
+      "severity": "critical",
+      "description": "Multi-variable atomicity violation (TUP - Type Unsafe Pattern): Bus1553Init initializes Command_OBDH.Raw and Command_OBDH.Bit.Address sequentially. If SYS_ISRExt6 ISR triggers between the two writes, it reads partially initialized values, causing incorrect command parsing.",
+      "location": {
+        "file": "L3_004.c",
+        "line": 416,
+        "function": "Bus1553Init"
+      },
+      "isr_location": {
+        "file": "L3_004.c",
+        "line": 696,
+        "function": "SYS_ISRExt6",
+        "isr_name": "SYS_ISRExt6"
+      },
+      "affected_variables": ["Command_OBDH.Raw", "Command_OBDH.Bit.Address"],
+      "interleaving_pattern": "WRITE-READ-READ-WRITE",
+      "root_cause": "ISR enabled before complete initialization of shared union structure",
+      "fix_suggestion": "Disable interrupts before initializing Command_OBDH, re-enable after both fields are written",
+      "buggy_code": "    Command_OBDH.Raw    = 0U;\n    Command_OBDH.Bit.Address   = 0U;",
+      "impact": "ISR may read inconsistent union state leading to incorrect 1553B command address parsing"
+    },
+    {
+      "id": "L3_004_AV_003",
+      "type": "atomicity-violation",
+      "subtype": "TUP_WWWW",
+      "severity": "critical",
+      "description": "Multi-variable atomicity violation (TUP - Type Unsafe Pattern): Bus1553Init writes Command_OBDH fields while SYS_ISRExt6 ISR can concurrently write the same fields, resulting in race condition and potential data corruption.",
+      "location": {
+        "file": "L3_004.c",
+        "line": 416,
+        "function": "Bus1553Init"
+      },
+      "isr_location": {
+        "file": "L3_004.c",
+        "line": 696,
+        "function": "SYS_ISRExt6",
+        "isr_name": "SYS_ISRExt6"
+      },
+      "affected_variables": ["Command_OBDH.Raw", "Command_OBDH.Bit.Address"],
+      "interleaving_pattern": "WRITE-WRITE-WRITE-WRITE",
+      "root_cause": "Concurrent write access to shared union without synchronization",
+      "fix_suggestion": "Use critical section protection around initialization writes to Command_OBDH",
+      "buggy_code": "    Command_OBDH.Raw    = 0U;\n    Command_OBDH.Bit.Address   = 0U;",
+      "impact": "Final state of Command_OBDH may be indeterminate due to interleaved writes from main and ISR contexts"
+    }
+  ],
+  "summary": {
+    "total_defects": 3,
+    "by_type": {
+      "atomicity-violation": 3
+    },
+    "by_severity": {
+      "critical": 3
+    },
+    "patterns_found": ["DFC_RWWR", "TUP_WRRW", "TUP_WWWW"]
+  }
+}

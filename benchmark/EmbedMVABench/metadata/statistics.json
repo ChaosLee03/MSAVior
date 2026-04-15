@@ -1,0 +1,59 @@
+{
+  "total": 36,
+  "positive": 24,
+  "negative": 12,
+  "total_defect_instances": 36,
+  "avg_loc": 1123.2,
+  "loc_range": [
+    723,
+    1992
+  ],
+  "by_level": {
+    "L1": 8,
+    "L2": 10,
+    "L3": 6,
+    "negative": 12
+  },
+  "by_source": {
+    "real": 24,
+    "derived": 12
+  },
+  "by_processor": {
+    "通用": 14,
+    "8051": 15,
+    "SPARC": 7
+  },
+  "by_fix_strategy": {
+    "move_to_interrupt_context": 4,
+    "disable_global_interrupt": 7,
+    "disable_specific_interrupt": 12,
+    "restructure_call_chain": 7,
+    "introduce_shadow_variable_with_critical_section": 6
+  },
+  "by_domain": {
+    "航空电子": 2,
+    "航天载荷控制": 2,
+    "卫星时钟频率校正": 1,
+    "实时操作系统AHB总线错误中断控制": 2,
+    "1553B总线共享内存读写": 1,
+    "1553B广播数据接收与遥控处理": 1,
+    "伺服电机RDC角度测量": 1,
+    "光学传感器零位偏差标定": 1,
+    "工业温控": 2,
+    "嵌入式存储管理": 2,
+    "航天载荷相机通信": 2,
+    "卫星1553B广播遥测": 2,
+    "卫星1553B遥控写入": 1,
+    "卫星遥测时间计算": 1,
+    "卫星NLS单路UART指令收发": 2,
+    "卫星电源管理遥测采集": 1,
+    "卫星CAN总线遥测双缓冲": 1,
+    "航天载荷相机RS422帧校验": 1,
+    "卫星GNC时间管理": 2,
+    "星上绝对时间控制": 1,
+    "工业继电器控制": 1,
+    "卫星星时同步": 2,
+    "星敏感器姿态四元数处理": 2,
+    "卫星姿态计算": 2
+  }
+}

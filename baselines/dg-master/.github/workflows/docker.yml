@@ -1,0 +1,19 @@
+---
+name: Docker Image
+
+on:
+  [push, pull_request]
+
+jobs:
+  Docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout DG
+        uses: actions/checkout@v3
+
+      - name: Build the Docker image
+        run: |
+          docker build . --file Dockerfile \
+                         --build-arg GIT_REF=$GITHUB_REF \
+                         --build-arg GIT_REPO=$GITHUB_REPOSITORY \
+                         --tag dg:$(date +%s)

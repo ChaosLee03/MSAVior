@@ -1,0 +1,25 @@
+---
+name: Find unformatted files
+
+on: [push, pull_request]
+
+jobs:
+  Format:
+    name: Find unformatted files
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout DG
+        uses: actions/checkout@v3
+
+      - name: Install clang-format 14
+        run: |
+          sudo apt install clang-format-14
+
+      - name: Find unformatted files
+        # Based on https://rigtorp.se/notes/clang-format/.
+        run: |
+          set -o pipefail
+          find . -regextype posix-extended \
+                 -iregex '\./(include|lib|tests|tools)/.*\.(h|c|cpp|hpp)' \
+                 -o -iregex '\./tests/catch2' -prune -type f | \
+              xargs clang-format-14 --style=file --dry-run -Werror --color=true

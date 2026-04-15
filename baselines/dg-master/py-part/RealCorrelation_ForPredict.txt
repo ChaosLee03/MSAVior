@@ -1,0 +1,8 @@
+svp_real_002.bc:::Tmp1, svp_real_002.bc:::Tmp2
+svp_real_002.bc:::steps1, svp_real_002.bc:::steps2, svp_real_002.bc:::steps3
+svp_real_002.bc:::Dir1, svp_real_002.bc:::Dir2, svp_real_002.bc:::Dir3
+svp_real_002.bc:::DirectionL, svp_real_002.bc:::DaValue[i1][jA]
+svp_real_002.bc:::DirectionR, svp_real_002.bc:::DaValue[i1][jB]
+svp_real_002.bc:::TR1, svp_real_002.bc:::BrakeTimes
+svp_real_002.bc:::ArriveHighSpeedLast, svp_real_002.bc:::state
+svp_real_002.bc:::XBYTE[49152], svp_real_002.bc:::XBYTE[57344]

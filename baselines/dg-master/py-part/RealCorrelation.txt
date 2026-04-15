@@ -1,0 +1,16 @@
+svp_real_001.bc:::open_current_1, svp_real_001.bc:::open_current_1B, svp_real_001.bc:::open_current_1C, svp_real_001.bc:::close_current_1, svp_real_001.bc:::close_current_1B, svp_real_001.bc:::close_current_1C
+svp_real_001.bc:::reset_count, svp_real_001.bc:::reset_clear, svp_real_001.bc:::reset_flag
+svp_real_001.bc:::control_num, svp_real_001.bc:::flag_control_exec
+svp_real_001.bc:::limit_number, svp_real_001.bc:::cur_open，svp_real_001.bc:::cur_close
+svp_real_001.bc:::prtp, svp_real_001.bc:::prtpB, svp_real_001.bc:::prtpC
+svp_real_001.bc:::charge_power, svp_real_001.bc:::charge_powerB, svp_real_001.bc:::charge_powerC
+svp_real_001.bc:::discharge_power, svp_real_001.bc:::discharge_powerB, svp_real_001.bc:::discharge_powerC
+svp_real_001.bc:::power, svp_real_001.bc:::powerB, svp_real_001.bc:::powerC
+svp_real_001.bc:::pressure_para[], svp_real_001.bc:::pressure_paraB[], svp_real_001.bc:::pressure_paraC[]
+svp_real_001.bc:::votg_value, svp_real_001.bc:::votg_valueB, svp_real_001.bc:::votg_valueC
+svp_real_001.bc:::flag_sf, svp_real_001.bc:::flag_tn_current
+svp_real_001.bc:::warn_state, svp_real_001.bc:::warn_count[]
+svp_real_001.bc:::open_current_2, svp_real_001.bc:::open_current_2B, svp_real_001.bc:::open_current_2C, svp_real_001.bc:::close_current_2, svp_real_001.bc:::close_current_2B, svp_real_001.bc:::close_current_2C
+svp_real_001.bc:::send_cur_index_A, svp_real_001.bc:::send_frame_num_A
+svp_real_001.bc:::send_cur_index_B, svp_real_001.bc:::send_frame_num_B
+svp_real_001.bc:::control_num, svp_real_001.bc:::flag_control_exec

@@ -1,0 +1,131 @@
+---
+name: DG + SVF
+on: [push, pull_request]
+
+jobs:
+  Ubuntu:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04]
+        compiler: [gcc, clang]
+
+    runs-on: ${{matrix.os}}
+    env:
+      # for colours in ninja
+      CLICOLOR_FORCE: 1
+
+    steps:
+      - name: Checkout DG
+        uses: actions/checkout@v3
+
+      - name: Checkout SVF
+        uses: actions/checkout@v3
+        with:
+          ref: SVF-2.4
+          repository: SVF-tools/SVF
+          path: svf
+
+      - name: Checkout SVF test-suite
+        uses: actions/checkout@v3
+        with:
+          # ref corresponding to the SVF ref above
+          ref: 2338ede904c1f46293b64ccf32feb09b3904401f
+          repository: SVF-tools/Test-Suite
+          path: svf/Test-Suite
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install ccache cmake ninja-build clang-13 llvm-13-dev \
+                           libz3-dev
+
+      - name: Set environment
+        id: env
+        run: |
+          if [[ "${{matrix.compiler}}" = "clang" ]]; then
+            echo "CC=clang-13" >> $GITHUB_ENV
+            echo "CXX=clang++-13" >> $GITHUB_ENV
+
+            # force coloured output
+            echo "CFLAGS=$CFLAGS -fcolor-diagnostics" >> $GITHUB_ENV
+            echo "CXXFLAGS=$CXXFLAGS -fcolor-diagnostics" >> $GITHUB_ENV
+          else
+            echo "CC=gcc" >> $GITHUB_ENV
+            echo "CXX=g++" >> $GITHUB_ENV
+
+            # force coloured output
+            echo "CFLAGS=$CFLAGS -fdiagnostics-color=always" >> $GITHUB_ENV
+            echo "CXXFLAGS=$CXXFLAGS -fdiagnostics-color=always" >> $GITHUB_ENV
+          fi
+
+          # set up ccache
+          sudo /usr/sbin/update-ccache-symlinks
+          echo "/usr/lib/ccache" >> $GITHUB_PATH
+
+          echo "CCACHE_BASEDIR=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+          echo "CCACHE_DIR=$GITHUB_WORKSPACE/.ccache" >> $GITHUB_ENV
+          echo "CCACHE_COMPRESS=true" >> $GITHUB_ENV
+          echo "CCACHE_COMPRESSLEVEL=6" >> $GITHUB_ENV
+          echo "CCACHE_MAXSIZE=400M" >> $GITHUB_ENV
+
+          echo "::set-output name=timestamp::$(date -u -Iseconds)"
+
+      - name: Set up ccache
+        uses: actions/cache@v3
+        with:
+          path: .ccache
+          key: ${{matrix.os}}-svf-${{matrix.compiler}}-${{steps.env.outputs.timestamp}}
+          restore-keys: ${{matrix.os}}-svf-${{matrix.compiler}}
+
+      - name: Build SVF
+        run: |
+          # Build directory name format is hard-coded in SVF tests...
+
+          # do not build with -Werror (needed for GCC 11.2.0)
+          sed -i 's/-Werror//' svf/CMakeLists.txt
+
+          # WARNING: DO NOT SET CMAKE_BUILD_TYPE! (except Debug)
+          # SVF expects that NDEBUG will never be defined!
+          cmake -Ssvf \
+                -Bsvf/Release-build \
+                -GNinja \
+                -DLLVM_DIR:PATH="$(llvm-config-13 --cmakedir)"
+
+          cmake --build svf/Release-build
+          (cd svf/Release-build && \
+           PATH="$(llvm-config-13 --bindir):$PATH" \
+           ctest --progress --output-on-failure)
+
+      - name: '[Dynamic LLVM] Configure CMake project'
+        run: |
+          cmake -S. \
+                -B_build \
+                -GNinja \
+                -DUSE_SANITIZERS:BOOL=ON \
+                -DLLVM_DIR:PATH="$(llvm-config-13 --cmakedir)" \
+                -DSVF_DIR:PATH="$GITHUB_WORKSPACE/svf/Release-build"
+
+      - name: '[Dynamic LLVM] Build'
+        run: cmake --build _build
+
+      - name: '[Dynamic LLVM] Run tests'
+        # TODO: turn off the detection of leaks, we're working on it
+        run: ASAN_OPTIONS=detect_leaks=0 cmake --build _build --target check
+
+      - name: '[Static LLVM] Re-configure CMake project'
+        run: |
+          cmake -S. \
+                -B_build \
+                -DLLVM_LINK_DYLIB:BOOL=OFF
+          cmake --build _build --target clean
+
+      - name: '[Static LLVM] Build'
+        run: cmake --build _build
+
+      - name: '[Static LLVM] Run tests'
+        # TODO: turn off the detection of leaks, we're working on it
+        run: ASAN_OPTIONS=detect_leaks=0 cmake --build _build --target check
+
+      - name: ccache statistics
+        run: ccache -s
